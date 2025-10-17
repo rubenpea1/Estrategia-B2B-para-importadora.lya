@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Estratégico @importadora.lya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%);
+            min-height: 100vh;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.95) 0%, rgba(59, 130, 246, 0.95) 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 20s linear infinite;
+        }
+        
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section-header {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .kpi-card {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        
+        .kpi-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: #3b82f6;
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.3);
+        }
+        
+        .kpi-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .kpi-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .kpi-description {
+            color: #475569;
+            font-size: 0.95rem;
+        }
+        
+        .competitor-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            overflow: hidden;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .competitor-table thead {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+        }
+        
+        .competitor-table th {
+            padding: 1.5rem;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .competitor-table tbody tr {
+            transition: all 0.3s ease;
+        }
+        
+        .competitor-table tbody tr:nth-child(even) {
+            background: #f8fafc;
+        }
+        
+        .competitor-table tbody tr:hover {
+            background: #e0f2fe;
+            transform: scale(1.01);
+        }
+        
+        .competitor-table td {
+            padding: 1.25rem 1.5rem;
+            color: #334155;
+        }
+        
+        .persona-card {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            height: 100%;
+            transition: all 0.3s ease;
+            border-left: 6px solid #f59e0b;
+        }
+        
+        .persona-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 15px 40px rgba(245, 158, 11, 0.3);
+        }
+        
+        .persona-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .persona-icon {
+            font-size: 4rem;
+            margin-right: 1rem;
+        }
+        
+        .persona-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #92400e;
+        }
+        
+        .persona-detail {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 10px;
+        }
+        
+        .persona-label {
+            font-weight: 700;
+            color: #92400e;
+            margin-right: 0.5rem;
+        }
+        
+        .chart-wrapper {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 1rem auto;
+        }
+        
+        .content-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .content-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-8px) rotate(-2deg);
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.3);
+        }
+        
+        .content-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .content-title {
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        
+        .badge-reel {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .badge-carousel {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .badge-image {
+            background: #f3e8ff;
+            color: #6b21a8;
+        }
+        
+        .funnel-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .funnel-stage {
+            flex: 1;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .funnel-stage:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.3);
+        }
+        
+        .funnel-percentage {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .funnel-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin: 0.75rem 0;
+        }
+        
+        .funnel-description {
+            color: #475569;
+            font-size: 0.9rem;
+        }
+        
+        .funnel-arrow {
+            font-size: 2.5rem;
+            color: #3b82f6;
+            animation: slideRight 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes slideRight {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+        
+        .cta-box {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(30, 58, 138, 0.3);
+        }
+        
+        .cta-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(30, 58, 138, 0.4);
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s ease;
+            border-left: 4px solid #10b981;
+        }
+        
+        .timeline-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2);
+        }
+        
+        .timeline-label {
+            font-weight: 700;
+            color: #065f46;
+            margin-right: 1rem;
+            min-width: 150px;
+        }
+        
+        .alert-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 6px solid #f59e0b;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .alert-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .alert-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 1rem;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .nav-tab {
+            background: #e0f2fe;
+            color: #1e40af;
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .nav-tab:hover, .nav-tab.active {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3);
+        }
+        
+        .metric-box {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .metric-label {
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-value {
+            color: #475569;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .section {
+                padding: 1.5rem;
+            }
+            
+            .section-header {
+                font-size: 1.75rem;
+            }
+            
+            .funnel-container {
+                flex-direction: column;
+            }
+            
+            .funnel-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <h1 class="hero-title">Estrategia B2B para @importadora.lya</h1>
+        <p class="hero-subtitle">Plan Integral de Instagram & Meta Ads</p>
+    </div>
+
+    <div class="container">
+        <div class="section">
+            <h2 class="section-header">🎯 Resumen Ejecutivo</h2>
+            <p style="color: #475569; font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.8;">
+                Transformar Instagram en un <strong>motor de generación de leads B2B cualificados</strong>, 
+                medido por cotizaciones y cierres de venta, no por métricas de vanidad.
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <div class="kpi-card">
+                    <div class="kpi-icon">🎯</div>
+                    <div class="kpi-title">Enfoque 100% B2B</div>
+                    <p class="kpi-description">Lubricentros, talleres, flotas y distribuidores. Filtrado activo del cliente minorista para optimizar recursos.</p>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">📈</div>
+                    <div class="kpi-title">Generación de Leads</div>
+                    <p class="kpi-description">Flujo constante de cotizaciones a través de WhatsApp, DM y Formularios de Meta Ads.</p>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon">🛠️</div>
+                    <div class="kpi-title">3 Pilares Estratégicos</div>
+                    <p class="kpi-description">Optimización del perfil + Contenido técnico-comercial + Publicidad de precisión.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-header">🔍 Análisis Competitivo</h2>
+            <p style="color: #475569; font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.8;">
+                El mercado B2B chileno valora <strong>eficiencia, confianza y comunicación directa</strong>. WhatsApp y el contenido educativo son las tendencias dominantes.
+            </p>
+            <div style="overflow-x: auto;">
+                <table class="competitor-table">
+                    <thead>
+                        <tr>
+                            <th>Competidor</th>
+                            <th>Propuesta de Valor</th>
+                            <th>Táctica a Replicar</th>
+                            <th>Oportunidad para LYA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Mannol / LubChile</strong></td>
+                            <td>Calidad alemana, asesoría B2B</td>
+                            <td>Biografía clara con WhatsApp directo</td>
+                            <td>Posicionarse como asesor técnico multimarca</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Motorex Chile</strong></td>
+                            <td>Cobertura nacional, red de distribuidores</td>
+                            <td>Enfocar KPIs en leads, no en vanidad</td>
+                            <td>Experiencia más cercana y personalizada</td>
+                        </tr>
+                        <tr>
+                            <td><strong>San Javier (Mobil)</strong></td>
+                            <td>Distribuidor oficial, servicios de valor</td>
+                            <td>Comunicar solidez de operación logística</td>
+                            <td>Competir con agilidad y flexibilidad</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ICLA Chile</strong></td>
+                            <td>Especialización en motos, fácil contacto</td>
+                            <td>Implementar hub de enlaces (Linktree)</td>
+                            <td>Ampliar enfoque a todos los segmentos</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-header">👥 Buyer Personas</h2>
+            <p style="color: #475569; font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.8;">
+                Dos perfiles profesionales clave. El consumidor final <strong>queda fuera deliberadamente</strong> para maximizar el ROI.
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
+                <div class="persona-card">
+                    <div class="persona-header">
+                        <div class="persona-icon">👨‍🔧</div>
+                        <div class="persona-title">Dueño de Lubricentro/Taller</div>
+                    </div>
+                    <div class="persona-detail">
+                        <span class="persona-label">Perfil:</span> 28-55 años, técnico y gestor de su negocio
+                    </div>
+                    <div class="persona-detail">
+                        <span class="persona-label">Necesidades:</span> Precios competitivos, stock constante, despacho rápido, info técnica clara
+                    </div>
+                    <div class="persona-detail">
+                        <span class="persona-label">Puntos de Dolor:</span> Quiebres de stock, plazos largos, incertidumbre sobre Ley REP
+                    </div>
+                    <div class="persona-detail">
+                        <span class="persona-label">Comportamiento IG:</span> Guarda contenido técnico, responde a CTAs directos por WhatsApp
+                    </div>
+                </div>
+                <div class="persona-card">
+                    <div class="persona-header">
+                        <div class="persona-icon">💼</div>
+                        <div class="persona-title">Encargado de Compras (Flota/Retail)</div>
+                    </div>
+                    <div class="persona-detail">
+                        <span class="persona-label">Perfil:</span> 30-55 años, empresas de transporte o tiendas de repuestos
+                    </div>
+                    <div class="persona-detail">
+                        <span class="persona-label">Necesidades:</span> Fichas técnicas, homologaciones API/ACEA, condiciones comerciales estructuradas
+                    </div>
+                    <div class="persona-detail">
+                        <span class="persona-label">Puntos de Dolor:</span> Justificar costos, gestión de inventarios, riesgo de fallas por lubricante inadecuado
+                    </div>
+                    <div class="persona-detail">
+                        <span class="persona-label">Comportamiento IG:</span> Valora profesionalismo, casos de éxito y testimonios
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-header">📱 Estrategia de Contenidos</h2>
+            <p style="color: #475569; font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.8;">
+                Construir <strong>autoridad y confianza</strong>. Priorizar educación técnica sobre promoción directa. 
+                <strong>Haz clic en el gráfico</strong> para filtrar las ideas de contenido por pilar estratégico.
+            </p>
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; align-items: start;">
+                <div class="chart-wrapper">
+                    <h3 style="text-align: center; font-weight: 700; color: #1e3a8a; margin-bottom: 1rem;">Pilares de Contenido</h3>
+                    <div class="chart-container">
+                        <canvas id="pillarsChart"></canvas>
+                    </div>
+                    <p style="text-align: center; color: #64748b; font-size: 0.85rem; margin-top: 1rem;">Haz clic en un segmento para filtrar</p>
+                </div>
+                <div>
+                    <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 1.5rem; border-radius: 16px; margin-bottom: 1.5rem;">
+                        <h3 style="text-align: center; font-weight: 700; color: #1e3a8a;">Galería de Ideas de Contenido</h3>
+                        <p id="filterStatus" style="text-align: center; color: #3b82f6; font-weight: 600; margin-top: 0.5rem;">Mostrando: Todos</p>
+                    </div>
+                    <div id="contentGallery" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-header">🎯 Estrategia de Meta Ads</h2>
+            <p style="color: #475569; font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.8;">
+                Campañas <strong>100% enfocadas en Lead Generation</strong>. Embudo de 3 capas para maximizar la conversión y el ROI.
+            </p>
+            
+            <h3 style="font-size: 1.5rem; font-weight: 700; color: #1e3a8a; margin-bottom: 1.5rem; text-align: center;">Estructura de Campañas (Embudo de Conversión)</h3>
+            <div class="funnel-container">
+                <div class="funnel-stage">
+                    <div class="funnel-percentage">60%</div>
+                    <div class="funnel-title">Prospección</div>
+                    <p class="funnel-description">Formularios Instantáneos + Clic a WhatsApp. Segmentación B2B por intereses profesionales.</p>
+                </div>
+                <div class="funnel-arrow">→</div>
+                <div class="funnel-stage">
+                    <div class="funnel-percentage">25%</div>
+                    <div class="funnel-title">Consideración</div>
+                    <p class="funnel-description">Carruseles técnicos promocionales. Remarketing 30-60 días a audiencia comprometida.</p>
+                </div>
+                <div class="funnel-arrow">→</div>
+                <div class="funnel-stage">
+                    <div class="funnel-percentage">15%</div>
+                    <div class="funnel-title">Remarketing Caliente</div>
+                    <p class="funnel-description">Ofertas directas + testimonios. Remarketing 7-14 días a usuarios con alta intención.</p>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem;">
+                <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: 2rem; border-radius: 16px;">
+                    <h3 style="font-weight: 700; color: #065f46; margin-bottom: 1.5rem; font-size: 1.25rem;">🎬 Guiones para Video Ads</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="background: white; padding: 1rem; border-radius: 10px; border-left: 4px solid #10b981;">
+                            <strong style="color: #065f46;">Hook 1:</strong> "¿Taller o lubricentro?" → Stock real → "Pide precios mayoristas"
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 10px; border-left: 4px solid #10b981;">
+                            <strong style="color: #065f46;">Hook 2:</strong> "¿Te quedaste sin 5W-30?" → Despacho → "RM 24-48h"
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 10px; border-left: 4px solid #10b981;">
+                            <strong style="color: #065f46;">Hook 3:</strong> "Ley REP 2027: Prepárate" → Gráfico → "Más info"
+                        </div>
+                        <div style="background: white; padding: 1rem; border-radius: 10px; border-left: 4px solid #10b981;">
+                            <strong style="color: #065f46;">Hook 4:</strong> "Flotas diésel: Menos paradas" → Homologaciones → "Cotizar"
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 2rem; border-radius: 16px;">
+                    <h3 style="font-weight: 700; color: #1e40af; margin-bottom: 1.5rem; font-size: 1.25rem;">📢 CTAs Efectivos</h3>
+                    <div style="display: grid; gap: 0.75rem;">
+                        <div class="cta-box">Pide la lista mayorista</div>
+                        <div class="cta-box">Cotiza por WhatsApp</div>
+                        <div class="cta-box">Descarga nuestro catálogo</div>
+                        <div class="cta-box">Solicita precio por tambor/caja</div>
+                        <div class="cta-box">Agenda asesoría técnica</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-header">📅 Plan de Implementación</h2>
+            <p style="color: #475569; font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.8;">
+                La <strong>consistencia es clave</strong>. Frecuencia de publicación equilibrada y división clara de tareas para asegurar ejecución eficiente.
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+                <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: 2rem; border-radius: 20px; border-left: 6px solid #10b981;">
+                    <h3 style="font-weight: 700; color: #065f46; margin-bottom: 1.5rem; font-size: 1.5rem;">📆 Frecuencia Semanal Ideal</h3>
+                    <div class="timeline-item">
+                        <span class="timeline-label">3 Reels:</span>
+                        <span>Lunes, Miércoles, Viernes</span>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-label">2 Carruseles:</span>
+                        <span>Martes, Jueves</span>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-label">5-7 Stories:</span>
+                        <span>Diarias (backstage, encuestas, Q&A, reposts)</span>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-label">1 Live:</span>
+                        <span>Mensual (Q&A técnico o sobre Ley REP)</span>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 2rem; border-radius: 20px; border-left: 6px solid #f59e0b;">
+                    <h3 style="font-weight: 700; color: #92400e; margin-bottom: 1.5rem; font-size: 1.5rem;">👥 División de Tareas (Equipo de 2)</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div style="background: rgba(255, 255, 255, 0.7); padding: 1.5rem; border-radius: 12px;">
+                            <h4 style="font-weight: 700; color: #92400e; margin-bottom: 1rem; text-align: center;">Rol 1: Estratega/Productor</h4>
+                            <ul style="list-style: none; padding: 0; color: #78350f;">
+                                <li style="margin-bottom: 0.5rem;">✓ Planificación y guiones</li>
+                                <li style="margin-bottom: 0.5rem;">✓ Edición de contenido</li>
+                                <li style="margin-bottom: 0.5rem;">✓ Gestión de Meta Ads</li>
+                                <li style="margin-bottom: 0.5rem;">✓ Análisis de KPIs</li>
+                            </ul>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.7); padding: 1.5rem; border-radius: 12px;">
+                            <h4 style="font-weight: 700; color: #92400e; margin-bottom: 1rem; text-align: center;">Rol 2: Comunidad/Soporte</h4>
+                            <ul style="list-style: none; padding: 0; color: #78350f;">
+                                <li style="margin-bottom: 0.5rem;">✓ Gestión de DM/WhatsApp</li>
+                                <li style="margin-bottom: 0.5rem;">✓ Recopilación de UGC</li>
+                                <li style="margin-bottom: 0.5rem;">✓ Coordinación con bodega</li>
+                                <li style="margin-bottom: 0.5rem;">✓ Actualización de Highlights</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-header">💬 Playbook de Atención y Calificación de Leads</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
+                <div style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); padding: 2rem; border-radius: 16px; border-left: 6px solid #10b981;">
+                    <h3 style="font-weight: 700; color: #065f46; margin-bottom: 1rem; font-size: 1.25rem;">📱 Mensaje de Bienvenida Automático</h3>
+                    <div style="background: white; padding: 1.5rem; border-radius: 12px; color: #374151; line-height: 1.8;">
+                        <p style="margin-bottom: 1rem;">"¡Hola! Gracias por escribir a Importadora LYA. Atendemos solo a <strong>empresas (venta mayorista)</strong>.</p>
+                        <p style="margin-bottom: 0.5rem;">Para agilizar tu cotización, por favor indícanos:</p>
+                        <ol style="margin-left: 1.5rem;">
+                            <li>Tu rubro (taller, lubricentro, flota, etc.)</li>
+                            <li>Productos y formatos que necesitas (caja, balde, tambor)</li>
+                            <li>Comuna/Región de despacho"</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 2rem; border-radius: 16px; border-left: 6px solid #3b82f6;">
+                    <h3 style="font-weight: 700; color: #1e40af; margin-bottom: 1rem; font-size: 1.25rem;">🎯 Proceso de Calificación</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); padding: 1.25rem; border-radius: 12px; border-left: 4px solid #10b981;">
+                            <div style="font-weight: 700; color: #065f46; margin-bottom: 0.5rem;">Lead A - Alto Potencial</div>
+                            <p style="color: #374151; font-size: 0.9rem;">Cumple con mínimos + solicita volumen → Se envía lista de precios + se asigna asesor</p>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 1.25rem; border-radius: 12px; border-left: 4px solid #f59e0b;">
+                            <div style="font-weight: 700; color: #92400e; margin-bottom: 0.5rem;">Lead B - Potencial Medio</div>
+                            <p style="color: #374151; font-size: 0.9rem;">Cumple mínimos justos → Se ofrecen packs de inicio o combos</p>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); padding: 1.25rem; border-radius: 12px; border-left: 4px solid #ef4444;">
+                            <div style="font-weight: 700; color: #991b1b; margin-bottom: 0.5rem;">Lead C - Descarte</div>
+                            <p style="color: #374151; font-size: 0.9rem;">Cliente minorista o no cumple mínimos → Mensaje amable de descarte</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-header">📊 KPIs y Medición (Primeros 90 días)</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+                <div style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); padding: 2.5rem; border-radius: 20px; border-left: 6px solid #10b981;">
+                    <h3 style="font-weight: 700; color: #065f46; margin-bottom: 1.5rem; font-size: 1.5rem;">🎯 Métricas de Negocio (Prioridad #1)</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div class="metric-box">
+                            <div class="metric-label">Nº de Leads Cualificados por Semana</div>
+                            <div class="metric-value">WhatsApp + Formularios de Meta Ads</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">Costo por Lead (CPL)</div>
+                            <div class="metric-value">En las campañas de Meta Ads</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">Tasa de Cierre</div>
+                            <div class="metric-value">De lead cualificado a primera compra</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 2.5rem; border-radius: 20px; border-left: 6px solid #3b82f6;">
+                    <h3 style="font-weight: 700; color: #1e40af; margin-bottom: 1.5rem; font-size: 1.5rem;">📱 Métricas de Contenido B2B</h3>
+                    <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; border-left: 4px solid #f59e0b;">
+                        <p style="color: #92400e; font-weight: 600; font-size: 0.95rem; line-height: 1.6;">
+                            <strong>⚠️ Expectativas Realistas:</strong> En B2B, 10-30 likes y 0-5 comentarios es NORMAL. 
+                            El valor está en métricas que demuestran intención de compra.
+                        </p>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div class="metric-box">
+                            <div class="metric-label">Guardados en Carruseles Educativos</div>
+                            <div class="metric-value">Indica alto valor percibido</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">Alcance de los Reels</div>
+                            <div class="metric-value">Mide la visibilidad del contenido</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">Clics al WhatsApp / DM Iniciados</div>
+                            <div class="metric-value">Mide la acción directa de compra</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="alert-box">
+                <div class="alert-icon">⚠️</div>
+                <h2 class="alert-title">Consideración Clave: Ley REP</h2>
+                <p style="color: #78350f; font-size: 1.05rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                    El D.S. N°47 (Ley REP) obliga a los importadores a financiar la recolección y valorización de aceites usados. 
+                    Esto <strong>no es solo un costo, es una oportunidad de marketing</strong> para posicionar a @importadora.lya como 
+                    un socio estratégico y responsable.
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    <div style="background: white; padding: 1.5rem; border-radius: 12px;">
+                        <h4 style="font-weight: 700; color: #92400e; margin-bottom: 0.75rem;">🎯 Acción Estratégica</h4>
+                        <p style="color: #475569; font-size: 0.95rem; line-height: 1.6;">
+                            Crear contenido educativo sobre la Ley REP (qué es, a quién aplica, fechas clave) para asesorar a los clientes. 
+                            Esto genera confianza y demuestra un valor que va más allá del producto.
+                        </p>
+                    </div>
+                    <div style="background: white; padding: 1.5rem; border-radius: 12px;">
+                        <h4 style="font-weight: 700; color: #92400e; margin-bottom: 0.75rem;">📅 Fecha Clave</h4>
+                        <p style="color: #475569; font-size: 0.95rem; line-height: 1.6;">
+                            Las metas de recolección comienzan a regir desde el <strong style="color: #92400e;">11 de noviembre de 2026</strong>. 
+                            La preparación debe empezar ahora para posicionarse como líder en el tema.
+                        </p>
+                    </div>
+                    <div style="background: white; padding: 1.5rem; border-radius: 12px;">
+                        <h4 style="font-weight: 700; color: #92400e; margin-bottom: 0.75rem;">🎓 Qué es la Ley REP</h4>
+                        <p style="color: #475569; font-size: 0.95rem; line-height: 1.6;">
+                            Obliga a importadores a organizar y financiar la recolección de aceites usados. 
+                            Meta inicial: 50%, aumentando gradualmente hasta 90% en 12 años.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); color: white; padding: 2rem; text-align: center; margin-top: 3rem;">
+        <p style="font-size: 0.95rem; opacity: 0.9;">Este es un plan estratégico interactivo diseñado para @importadora.lya</p>
+        <p style="font-size: 0.85rem; opacity: 0.75; margin-top: 0.5rem;">&copy; 2025 - Todos los derechos reservados</p>
+    </footer>
+
+    <script>
+        const contentIdeas = [
+            { title: 'Guía de Viscosidades', format: 'Reel', category: 'educativo', icon: '🎓' },
+            { title: 'Unboxing de Pallet', format: 'Reel', category: 'operacion', icon: '📦' },
+            { title: '3 Errores en Flotas Diésel', format: 'Reel', category: 'educativo', icon: '🚚' },
+            { title: 'Time-lapse Despacho', format: 'Reel', category: 'operacion', icon: '⏱️' },
+            { title: 'API vs. ACEA en 15s', format: 'Reel', category: 'educativo', icon: '⚙️' },
+            { title: 'Reel con Sorteo', format: 'Reel', category: 'comercial', icon: '🏆' },
+            { title: 'Antes y Después (Taller)', format: 'Reel', category: 'comunidad', icon: '✨' },
+            { title: 'Top 5 Productos Rotación', format: 'Reel', category: 'comercial', icon: '🔥' },
+            { title: 'Guía 5W-30 vs 10W-40', format: 'Carrusel', category: 'educativo', icon: '📚' },
+            { title: 'Políticas Comerciales', format: 'Carrusel', category: 'comercial', icon: '📄' },
+            { title: 'Ley REP en 6 Láminas', format: 'Carrusel', category: 'educativo', icon: '⚖️' },
+            { title: 'Oferta Exclusiva + Bono', format: 'Carrusel', category: 'comercial', icon: '🎁' },
+            { title: 'Checklist para Lubricentro', format: 'Carrusel', category: 'educativo', icon: '✅' },
+            { title: 'Foto "Combo Taller"', format: 'Imagen', category: 'comercial', icon: '🛠️' },
+            { title: 'Foto Bodega con Stock', format: 'Imagen', category: 'operacion', icon: '🏭' },
+            { title: 'Close-up a Etiquetas', format: 'Imagen', category: 'educativo', icon: '🔍' },
+            { title: 'Mapa Cobertura Despacho', format: 'Imagen', category: 'operacion', icon: '🗺️' }
+        ];
+
+        let currentFilter = 'all';
+
+        function renderContent() {
+            const gallery = document.getElementById('contentGallery');
+            const filterStatus = document.getElementById('filterStatus');
+            gallery.innerHTML = '';
+
+            const filtered = currentFilter === 'all' 
+                ? contentIdeas 
+                : contentIdeas.filter(idea => idea.category === currentFilter);
+
+            const filterNames = {
+                'all': 'Todos',
+                'educativo': 'Educativo/Técnico',
+                'comercial': 'Comercial/Oferta B2B',
+                'operacion': 'Operación/Confianza',
+                'comunidad': 'Comunidad/UGC'
+            };
+
+            filterStatus.textContent = `Mostrando: ${filterNames[currentFilter]} (${filtered.length})`;
+
+            filtered.forEach(idea => {
+                const badgeClass = idea.format === 'Reel' ? 'badge-reel' : 
+                                  idea.format === 'Carrusel' ? 'badge-carousel' : 'badge-image';
+                
+                const card = document.createElement('div');
+                card.className = 'content-card';
+                card.innerHTML = `
+                    <div class="content-icon">${idea.icon}</div>
+                    <div class="content-title">${idea.title}</div>
+                    <span class="badge ${badgeClass}">${idea.format}</span>
+                `;
+                gallery.appendChild(card);
+            });
+        }
+
+        const ctx = document.getElementById('pillarsChart').getContext('2d');
+        const pillarsChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Educativo/Técnico (40%)', 'Comercial/Oferta B2B (30%)', 'Operación/Confianza (20%)', 'Comunidad/UGC (10%)'],
+                datasets: [{
+                    data: [40, 30, 20, 10],
+                    backgroundColor: ['#3b82f6', '#f59e0b', '#10b981', '#8b5cf6'],
+                    borderWidth: 4,
+                    borderColor: '#fff',
+                    hoverOffset: 15
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            font: { size: 11, weight: 600 },
+                            color: '#1e3a8a'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(30, 58, 138, 0.95)',
+                        padding: 12,
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 13 },
+                        cornerRadius: 8
+                    }
+                },
+                onClick: (event, elements) => {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        const categories = ['educativo', 'comercial', 'operacion', 'comunidad'];
+                        currentFilter = categories[index];
+                        renderContent();
+                    }
+                }
+            }
+        });
+
+        renderContent();
+    </script>
+</body>
+</html>
